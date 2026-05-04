@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------
+// Users
+// ---------------------------------------------------------------
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String   @default("")
+  role      String   @default("operator") // "admin" | "operator"
+  createdAt DateTime @default(now())
+
+  wallets Wallet[]
+}
+
+// ---------------------------------------------------------------
+// Wallets
+// ---------------------------------------------------------------
+model Wallet {
+  id            String  @id @default(cuid())
+  ownerId       String
+  label         String
+  currency      String  // "NGN" | "USD" | "EUR"
+  balance       Float   @default(0)
+  accountNumber String  @unique
+
+  owner             User          @relation(fields: [ownerId], references: [id])
+  sentTransactions  Transaction[] @relation("SenderWallet")
+  recvTransactions  Transaction[] @relation("RecipientWallet")
+}
+
+// ---------------------------------------------------------------
+// Transactions
+// ---------------------------------------------------------------
+model Transaction {
+  id                 String   @id
+  senderWalletId     String
+  recipientWalletId  String
+  recipientAccountNo String?
+  recipientName      String?
+  amount             Float
+  currency           String
+  convertedAmount    Float?
+  convertedCurrency  String?
+  fxRate             Float?
+  status             String   @default("Pending") // Pending | Processing | Settled | Failed
+  iso20022Xml        String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  senderWallet    Wallet             @relation("SenderWallet", fields: [senderWalletId], references: [id])
+  recipientWallet Wallet             @relation("RecipientWallet", fields: [recipientWalletId], references: [id])
+  stages          TransactionStage[]
+  fraudAlerts     FraudAlert[]
+}
+
+model TransactionStage {
+  id            String  @id @default(cuid())
+  transactionId String
+  stage         String  // Initiated | Authenticated | FraudChecked | Settled | Failed
+  timestamp     DateTime @default(now())
+  latencyMs     Int?
+
+  transaction Transaction @relation(fields: [transactionId], references: [id])
+}
+
+// ---------------------------------------------------------------
+// Fraud Alerts
+// ---------------------------------------------------------------
+model FraudAlert {
+  id            String   @id @default(cuid())
+  transactionId String
+  severity      String   // low | medium | high | critical
+  message       String
+  resolved      Boolean  @default(false)
+  timestamp     DateTime @default(now())
+
+  transaction Transaction @relation(fields: [transactionId], references: [id])
+}
+
+// ---------------------------------------------------------------
+// System Logs
+// ---------------------------------------------------------------
+model SystemLog {
+  id        String   @id @default(cuid())
+  level     String   // info | warn | error
+  message   String
+  source    String
+  timestamp DateTime @default(now())
+}
