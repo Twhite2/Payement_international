@@ -42,7 +42,6 @@ export function PaymentForm() {
   const [recipientLookup, setRecipientLookup] = useState<AccountLookupResult | null>(null);
   const [lookupLoading, setLookupLoading] = useState(false);
   const [amount, setAmount] = useState("");
-  const [currency, setCurrency] = useState<Currency>("NGN");
   const [fxPreview, setFxPreview] = useState<FxRate | null>(null);
   const [fxLoading, setFxLoading] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -157,7 +156,7 @@ export function PaymentForm() {
       recipientAccountNo,
       recipientName: recipientName || undefined,
       amount: parseFloat(amount),
-      currency,
+      currency: senderWallet!.currency,
     });
   }
 
@@ -249,37 +248,18 @@ export function PaymentForm() {
               </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="amount">Amount</Label>
-                <Input
-                  id="amount"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  placeholder="0.00"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="currency">Currency</Label>
-                <Select
-                  value={currency}
-                  onValueChange={(v) => setCurrency(v as Currency)}
-                >
-                  <SelectTrigger id="currency">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="NGN">NGN - Nigerian Naira</SelectItem>
-                    <SelectItem value="USD">USD - US Dollar</SelectItem>
-                    <SelectItem value="EUR">EUR - Euro</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="amount">Amount{senderWallet ? ` (${senderWallet.currency})` : ""}</Label>
+              <Input
+                id="amount"
+                type="number"
+                min="0"
+                step="0.01"
+                placeholder="0.00"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                required
+              />
             </div>
 
             {(fxPreview || fxLoading) && numAmount > 0 && (
