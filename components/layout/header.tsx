@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Bell, CheckCircle2, AlertTriangle, Info, X } from "lucide-react";
+import { Bell, CheckCircle2, AlertTriangle, Info, X, Menu } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -82,7 +82,11 @@ const typeColor = {
   info: "text-blue-600",
 };
 
-export function Header() {
+interface HeaderProps {
+  onMenuToggle?: () => void;
+}
+
+export function Header({ onMenuToggle }: HeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
   const title = getPageTitle(pathname);
@@ -106,12 +110,18 @@ export function Header() {
   }
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-border bg-card px-6">
-      <div>
+    <header className="flex h-16 items-center justify-between border-b border-border bg-card px-4 md:px-6">
+      <div className="flex items-center gap-3">
+        <button
+          onClick={onMenuToggle}
+          className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground md:hidden"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
         <h1 className="text-lg font-semibold text-foreground">{title}</h1>
       </div>
       <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
           <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" />
           System Online
         </div>
@@ -138,7 +148,7 @@ export function Header() {
                 className="fixed inset-0 z-40"
                 onClick={() => setOpen(false)}
               />
-              <div className="absolute right-0 top-full z-50 mt-2 w-96 rounded-lg border border-border bg-card shadow-lg">
+              <div className="absolute right-0 top-full z-50 mt-2 w-[calc(100vw-2rem)] sm:w-96 max-w-96 rounded-lg border border-border bg-card shadow-lg overflow-hidden">
                 <div className="flex items-center justify-between px-4 py-3">
                   <h3 className="text-sm font-semibold text-foreground">
                     Notifications
@@ -183,14 +193,14 @@ export function Header() {
                             />
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2">
-                                <p className="text-sm font-medium text-foreground">
+                                <p className="text-sm font-medium text-foreground truncate">
                                   {n.title}
                                 </p>
                                 {!n.read && (
                                   <span className="inline-block h-1.5 w-1.5 rounded-full bg-blue-600 shrink-0" />
                                 )}
                               </div>
-                              <p className="mt-0.5 text-xs text-muted-foreground line-clamp-2">
+                              <p className="mt-0.5 text-xs text-muted-foreground line-clamp-2 break-all">
                                 {n.message}
                               </p>
                               <div className="mt-1 flex items-center gap-2">

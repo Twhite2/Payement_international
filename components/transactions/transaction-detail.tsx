@@ -67,14 +67,14 @@ export function TransactionDetail({ id }: { id: string }) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-3 sm:gap-4">
         <Button variant="ghost" size="sm" asChild>
           <Link href="/transactions">
             <ArrowLeft className="mr-1 h-4 w-4" />
             Back
           </Link>
         </Button>
-        <h2 className="font-mono text-lg font-semibold">{txn.id}</h2>
+        <h2 className="font-mono text-base sm:text-lg font-semibold">{txn.id}</h2>
         <Badge variant={statusColor(txn.status)} className="gap-1.5">
           <span
             className={`inline-block h-1.5 w-1.5 rounded-full ${statusDotColor(txn.status)}`}
@@ -221,9 +221,9 @@ function DetailRow({
   mono?: boolean;
 }) {
   return (
-    <div className="flex items-center justify-between text-sm">
-      <span className="text-muted-foreground">{label}</span>
-      <span className={`font-medium ${mono ? "font-mono text-xs" : ""}`}>
+    <div className="flex items-center justify-between gap-2 text-sm">
+      <span className="text-muted-foreground shrink-0">{label}</span>
+      <span className={`font-medium text-right break-all ${mono ? "font-mono text-xs" : ""}`}>
         {value}
       </span>
     </div>

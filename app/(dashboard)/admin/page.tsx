@@ -10,8 +10,12 @@ export default function AdminPage() {
     <div className="space-y-6">
       <MetricsCharts />
       <div className="grid gap-6 lg:grid-cols-2">
-        <FraudAlerts />
-        <SystemLogs />
+        <div className="min-w-0 overflow-hidden">
+          <FraudAlerts />
+        </div>
+        <div className="min-w-0 overflow-hidden">
+          <SystemLogs />
+        </div>
       </div>
     </div>
   );

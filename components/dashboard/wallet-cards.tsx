@@ -47,7 +47,7 @@ export function WalletCards() {
             <Wallet className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold tabular-nums">
+            <div className="text-xl sm:text-2xl font-bold tabular-nums">
               {formatCurrency(wallet.balance, wallet.currency)}
             </div>
             <p className="mt-1 text-xs text-muted-foreground">

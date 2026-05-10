@@ -84,7 +84,7 @@ export function TransactionTable() {
             ({filtered.length})
           </span>
         </CardTitle>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -94,7 +94,7 @@ export function TransactionTable() {
                 setSearch(e.target.value);
                 setPage(0);
               }}
-              className="w-56 pl-9"
+              className="w-full sm:w-56 pl-9"
             />
           </div>
           <Select
@@ -104,7 +104,7 @@ export function TransactionTable() {
               setPage(0);
             }}
           >
-            <SelectTrigger className="w-36">
+            <SelectTrigger className="w-full sm:w-36">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>

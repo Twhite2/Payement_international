@@ -38,7 +38,7 @@ export function SystemLogs() {
         <ScrollArea className="h-72 rounded-md border border-border bg-muted/20">
           <div className="p-4 font-mono text-xs leading-6">
             {logs?.map((log) => (
-              <div key={log.id} className="flex gap-2">
+              <div key={log.id} className="flex flex-wrap gap-x-2 gap-y-0 md:flex-nowrap">
                 <span className="shrink-0 text-muted-foreground">
                   {formatDateTime(log.timestamp)}
                 </span>
@@ -52,7 +52,7 @@ export function SystemLogs() {
                 <span className="shrink-0 text-muted-foreground">
                   [{log.source}]
                 </span>
-                <span className="text-foreground">{log.message}</span>
+                <span className="text-foreground break-all">{log.message}</span>
               </div>
             ))}
           </div>

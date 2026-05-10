@@ -59,10 +59,10 @@ export function MetricsCharts() {
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="latency">
-          <TabsList>
-            <TabsTrigger value="latency">Latency (ms)</TabsTrigger>
-            <TabsTrigger value="throughput">Throughput (TPS)</TabsTrigger>
-            <TabsTrigger value="uptime">Uptime (%)</TabsTrigger>
+          <TabsList className="w-full sm:w-auto flex-wrap sm:flex-nowrap h-auto">
+            <TabsTrigger value="latency" className="text-xs sm:text-sm">Latency (ms)</TabsTrigger>
+            <TabsTrigger value="throughput" className="text-xs sm:text-sm">Throughput (TPS)</TabsTrigger>
+            <TabsTrigger value="uptime" className="text-xs sm:text-sm">Uptime (%)</TabsTrigger>
           </TabsList>
 
           <TabsContent value="latency" className="pt-4">
